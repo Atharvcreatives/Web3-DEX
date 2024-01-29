@@ -14,7 +14,7 @@ function Swap() {
   const [tokenOne, setTokenOne] = useState(tokenList[0]);
   const [tokenTwo, setTokenTwo] = useState(tokenList[1]);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [changeToken , setChangeToken] = useState(1);
   function handleSlippageChange(e) {
     setSlippage(e.target.value);
   }
@@ -28,6 +28,11 @@ function Swap() {
     const two = tokenTwo;
     setTokenOne(two);
     setTokenTwo(one);
+  }
+
+  function openModal(asset){
+   setChangeToken(asset);
+   setIsOpen(true);
   }
   const settings = (
     <>
@@ -44,12 +49,30 @@ function Swap() {
 
   return (
     <>
-      <Modal
+        <Modal
         open={isOpen}
         footer={null}
         onCancel={() => setIsOpen(false)}
         title="Select a token"
-      ></Modal>
+      >
+        <div className="modalContent">
+          {tokenList?.map((e, i) => {
+            return (
+              <div
+                className="tokenChoice"
+                key={i}
+                // onClick={() => modifyToken(i)}
+              >
+                <img src={e.img} alt={e.ticker} className="tokenLogo" />
+                <div className="tokenChoiceNames">
+                  <div className="tokenName">{e.name}</div>
+                  <div className="tokenTicker">{e.ticker}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Modal>
       <div className="tradeBox">
         <div className="tradeBoxHeader">
           <h4>Swap</h4>
@@ -72,12 +95,12 @@ function Swap() {
           <div className="switchButton" onClick={switchTokens}>
             <ArrowDownOutlined className="switchArrow" />
           </div>
-          <div className="assetOne">
+          <div className="assetOne" onClick={()=> openModal(1)}>
             <img src={tokenOne.img} alt="assetOneLogo" className="assetLogo" />
             {tokenOne.ticker}
             <DownOutlined />
           </div>
-          <div className="assetTwo">
+          <div className="assetTwo" onClick={()=> openModal(2)}>
             <img src={tokenTwo.img} alt="assetTwoLogo" className="assetLogo" />
             {tokenTwo.ticker}
             <DownOutlined />
