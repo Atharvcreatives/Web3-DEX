@@ -24,13 +24,12 @@ function Swap() {
 
   function changeAmount(e) {
     setTokenOneAmount(e.target.value);
-    if(e.target.value && prices){
-      setTokenTwoAmount((e.target.value * prices.ratio).toFixed(2))
-    }else{
+    if (e.target.value && prices) {
+      setTokenTwoAmount((e.target.value * prices.ratio).toFixed(2));
+    } else {
       setTokenTwoAmount(null);
     }
   }
-
 
   function switchTokens() {
     setPrices(null);
@@ -40,7 +39,7 @@ function Swap() {
     const two = tokenTwo;
     setTokenOne(two);
     setTokenTwo(one);
-    fetchPrices(two.address , one.address)
+    fetchPrices(two.address, one.address);
   }
 
   function openModal(asset) {
@@ -64,11 +63,10 @@ function Swap() {
     console.log(res.data);
     setPrices(res.data);
   }
-  
-  useEffect(()=>{
-  fetchPrices(tokenList[0].address, tokenList[1].address)
-  }, [])
 
+  useEffect(() => {
+    fetchPrices(tokenList[0].address, tokenList[1].address);
+  }, []);
 
   const settings = (
     <>
