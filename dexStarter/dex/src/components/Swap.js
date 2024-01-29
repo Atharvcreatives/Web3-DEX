@@ -40,6 +40,7 @@ function Swap() {
     const two = tokenTwo;
     setTokenOne(two);
     setTokenTwo(one);
+    fetchPrices(two.address , one.address)
   }
 
   function openModal(asset) {
