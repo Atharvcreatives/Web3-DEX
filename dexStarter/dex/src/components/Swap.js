@@ -24,7 +24,13 @@ function Swap() {
 
   function changeAmount(e) {
     setTokenOneAmount(e.target.value);
+    if(e.target.value && prices){
+      setTokenTwoAmount((e.target.value * prices.ratio).toFixed(2))
+    }else{
+      setTokenTwoAmount(null);
+    }
   }
+
 
   function switchTokens() {
     const one = tokenOne;
