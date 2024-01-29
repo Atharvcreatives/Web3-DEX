@@ -6,6 +6,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import tokenList from "../tokenList.json";
+import axios from "axios";
 
 function Swap() {
   const [slippage, setSlippage] = useState(2.5);
@@ -14,7 +15,9 @@ function Swap() {
   const [tokenOne, setTokenOne] = useState(tokenList[0]);
   const [tokenTwo, setTokenTwo] = useState(tokenList[1]);
   const [isOpen, setIsOpen] = useState(false);
-  const [changeToken , setChangeToken] = useState(1);
+  const [changeToken, setChangeToken] = useState(1);
+  const [prices, setPrices] = useState(null);
+
   function handleSlippageChange(e) {
     setSlippage(e.target.value);
   }
@@ -30,19 +33,32 @@ function Swap() {
     setTokenTwo(one);
   }
 
-  function openModal(asset){
-   setChangeToken(asset);
-   setIsOpen(true);
+  function openModal(asset) {
+    setChangeToken(asset);
+    setIsOpen(true);
   }
 
-  function modifyToken(i){
-   if (changeToken === 1){
-    setTokenOne(tokenList[i]);
-   } else{
-    setTokenTwo(tokenList[i]);
-   }
-   setIsOpen(false)
+  function modifyToken(i) {
+    if (changeToken === 1) {
+      setTokenOne(tokenList[i]);
+    } else {
+      setTokenTwo(tokenList[i]);
+    }
+    setIsOpen(false);
   }
+
+  async function fetchPrices(one, two) {
+    const res = await axios.get(`http://localhost:3001/tokenPrice`, {
+      params: { addressOne: one, addressTwo: two },
+    });
+    console.log(res.data);
+    setPrices(res.data);
+  }
+  
+  useEffect(()=>{
+  fetchPrices(tokenList[0].address, tokenList[1].address)
+  }, [])
+
 
   const settings = (
     <>
@@ -59,7 +75,7 @@ function Swap() {
 
   return (
     <>
-        <Modal
+      <Modal
         open={isOpen}
         footer={null}
         onCancel={() => setIsOpen(false)}
@@ -105,18 +121,20 @@ function Swap() {
           <div className="switchButton" onClick={switchTokens}>
             <ArrowDownOutlined className="switchArrow" />
           </div>
-          <div className="assetOne" onClick={()=> openModal(1)}>
+          <div className="assetOne" onClick={() => openModal(1)}>
             <img src={tokenOne.img} alt="assetOneLogo" className="assetLogo" />
             {tokenOne.ticker}
             <DownOutlined />
           </div>
-          <div className="assetTwo" onClick={()=> openModal(2)}>
+          <div className="assetTwo" onClick={() => openModal(2)}>
             <img src={tokenTwo.img} alt="assetTwoLogo" className="assetLogo" />
             {tokenTwo.ticker}
             <DownOutlined />
           </div>
         </div>
-        <div className="swapButton" disabled={!tokenOneAmount}>Swap</div>
+        <div className="swapButton" disabled={!tokenOneAmount}>
+          Swap
+        </div>
       </div>
     </>
   );
