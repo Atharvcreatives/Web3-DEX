@@ -41,6 +41,7 @@ function Swap() {
    } else{
     setTokenTwo(tokenList[i]);
    }
+   setIsOpen(false)
   }
 
   const settings = (
@@ -115,6 +116,7 @@ function Swap() {
             <DownOutlined />
           </div>
         </div>
+        <div className="swapButton" disabled={!tokenOneAmount}>Swap</div>
       </div>
     </>
   );
