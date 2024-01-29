@@ -47,11 +47,16 @@ function Swap() {
     setIsOpen(true);
   }
 
-  function modifyToken(i) {
+  function modifyToken(i){
+    setPrices(null);
+    setTokenOneAmount(null);
+    setTokenTwoAmount(null);
     if (changeToken === 1) {
       setTokenOne(tokenList[i]);
+      fetchPrices(tokenList[i].address, tokenTwo.address)
     } else {
       setTokenTwo(tokenList[i]);
+      fetchPrices(tokenOne.address, tokenList[i].address)
     }
     setIsOpen(false);
   }
