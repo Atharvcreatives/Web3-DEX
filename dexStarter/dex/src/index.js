@@ -21,8 +21,10 @@ const client = createClient({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <WagmiConfig client={client}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
+      </WagmiConfig>
   </React.StrictMode>
 );
