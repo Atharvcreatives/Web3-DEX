@@ -90,7 +90,7 @@ function Swap(props) {
   }, []);
 
   async function fetchDexSwap(){
-    
+    const allowance = await axios.get(`https://api.1inch.io/v5.2/1/approve/transaction?tokenAddress=${tokenOne.address}&walletAddress=${address}`)
   }
 
   useEffect(()=>{
