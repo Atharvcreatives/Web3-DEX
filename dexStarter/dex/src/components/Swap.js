@@ -7,9 +7,10 @@ import {
 } from "@ant-design/icons";
 import tokenList from "../tokenList.json";
 import axios from "axios";
-import {useSendTransaction , useWaitForTransaction} from "wagmi";
+import { useSendTransaction, useWaitForTransaction } from "wagmi";
 
-function Swap() {
+function Swap(props) {
+  const { address, isConnected } = props;
   const [slippage, setSlippage] = useState(2.5);
   const [tokenOneAmount, setTokenOneAmount] = useState(null);
   const [tokenTwoAmount, setTokenTwoAmount] = useState(null);
@@ -32,7 +33,7 @@ function Swap() {
     }
   }
 
-function switchTokens() {
+  function switchTokens() {
     setPrices(null);
     setTokenOneAmount(null);
     setTokenTwoAmount(null);
@@ -48,16 +49,16 @@ function switchTokens() {
     setIsOpen(true);
   }
 
-  function modifyToken(i){
+  function modifyToken(i) {
     setPrices(null);
     setTokenOneAmount(null);
     setTokenTwoAmount(null);
     if (changeToken === 1) {
       setTokenOne(tokenList[i]);
-      fetchPrices(tokenList[i].address, tokenTwo.address)
+      fetchPrices(tokenList[i].address, tokenTwo.address);
     } else {
       setTokenTwo(tokenList[i]);
-      fetchPrices(tokenOne.address, tokenList[i].address)
+      fetchPrices(tokenOne.address, tokenList[i].address);
     }
     setIsOpen(false);
   }
@@ -147,7 +148,7 @@ function switchTokens() {
             <DownOutlined />
           </div>
         </div>
-        <div className="swapButton" disabled={!tokenOneAmount}>
+        <div className="swapButton" disabled={!tokenOneAmount || !isConnected}>
           Swap
         </div>
       </div>
