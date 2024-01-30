@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import tokenList from "../tokenList.json";
 import axios from "axios";
+import {useSendTransaction , useWaitForTransaction} from "wagmi";
 
 function Swap() {
   const [slippage, setSlippage] = useState(2.5);
