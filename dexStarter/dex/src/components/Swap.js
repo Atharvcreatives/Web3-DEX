@@ -31,7 +31,7 @@ function Swap() {
     }
   }
 
-  function switchTokens() {
+function switchTokens() {
     setPrices(null);
     setTokenOneAmount(null);
     setTokenTwoAmount(null);
