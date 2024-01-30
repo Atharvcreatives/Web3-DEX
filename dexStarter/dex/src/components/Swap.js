@@ -11,6 +11,7 @@ import { useSendTransaction, useWaitForTransaction } from "wagmi";
 
 function Swap(props) {
   const { address, isConnected } = props;
+  const { messageApi, contextHolder } = message.useMessage();
   const [slippage, setSlippage] = useState(2.5);
   const [tokenOneAmount, setTokenOneAmount] = useState(null);
   const [tokenTwoAmount, setTokenTwoAmount] = useState(null);
@@ -32,6 +33,10 @@ function Swap(props) {
       data: String(txDetails.data),
       value: String(txDetails.value),
     },
+  });
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
   });
 
   function handleSlippageChange(e) {
@@ -123,6 +128,35 @@ function Swap(props) {
     }
   }, [txDetails]);
 
+  useEffect(() => {
+    messageApi.destroy();
+
+    if (isLoading) {
+      messageApi.open({
+        type: "loading",
+        content: "Transaction is Pending...",
+        duration: 0,
+      });
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    messageApi.destroy();
+    if (isSuccess) {
+      messageApi.open({
+        type: "success",
+        content: "Transaction Successful",
+        duration: 1.5,
+      });
+    } else if (txDetails.to) {
+      messageApi.open({
+        type: "error",
+        content: "Transaction failed",
+        duration: 1.5,
+      });
+    }
+  }, [isSuccess]);
+
   const settings = (
     <>
       <div>Slippage Tolerance</div>
@@ -138,6 +172,7 @@ function Swap(props) {
 
   return (
     <>
+      {contextHolder}
       <Modal
         open={isOpen}
         footer={null}
