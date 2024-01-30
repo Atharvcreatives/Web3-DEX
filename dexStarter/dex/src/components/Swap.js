@@ -98,7 +98,7 @@ function Swap(props) {
     const allowance = await axios.get(
       `https://api.1inch.io/v5.2/1/approve/allowance?tokenAddress=${tokenOne.address}&walletAddress=${address}`
     );
-    if (allowance.data.allowance == "0") {
+    if (allowance.data.allowance === "0") {
       const approve = await axios.get(
         `https://api.1inch.io/v5.2/1/approve/transaction?tokenAddress=${tokenOne.address}`
       );
@@ -126,7 +126,7 @@ function Swap(props) {
     if (txDetails.to && isConnected) {
       SendTransaction();
     }
-  }, [txDetails]);
+  }, [txDetails.to, isConnected, SendTransaction]);
 
   useEffect(() => {
     messageApi.destroy();
@@ -138,7 +138,7 @@ function Swap(props) {
         duration: 0,
       });
     }
-  }, [isLoading]);
+  }, [isLoading, messageApi]);
 
   useEffect(() => {
     messageApi.destroy();
@@ -155,7 +155,7 @@ function Swap(props) {
         duration: 1.5,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess, txDetails.to, messageApi]);
 
   const settings = (
     <>
