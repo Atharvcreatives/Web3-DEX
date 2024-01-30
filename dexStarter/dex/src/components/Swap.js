@@ -19,6 +19,20 @@ function Swap(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [changeToken, setChangeToken] = useState(1);
   const [prices, setPrices] = useState(null);
+  const [txDetails , setTxDetails] = useState({
+    to:null,
+    data:null,
+    value: null,
+  });
+
+  const {data, SendTransaction} = useSendTransaction({
+    request:{
+    from: address,
+    to: String(txDetails.to),
+    data: String(txDetails.data),
+    value: String(txDetails.value),
+    }
+  })
 
   function handleSlippageChange(e) {
     setSlippage(e.target.value);
@@ -74,6 +88,16 @@ function Swap(props) {
   useEffect(() => {
     fetchPrices(tokenList[0].address, tokenList[1].address);
   }, []);
+
+  async function fetchDexSwap(){
+    
+  }
+
+  useEffect(()=>{
+    if(txDetails.to && isConnected){
+     SendTransaction();
+    }
+  }, [txDetails])
 
   const settings = (
     <>
